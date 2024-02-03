@@ -47,6 +47,7 @@ Node ::Node(int n, Node* ptr)
 Node* connector(Node* nodeptr, int input); 
 Node* newNode(int input); 
 void traverse(Node* nodeptr);
+void test(int input); 
 
 
 
@@ -105,6 +106,14 @@ void traverse(Node* nodeptr)
 
 }
 
+void test(int input)
+{
+
+
+
+
+}
+
 
 int main()
 {
@@ -127,6 +136,7 @@ int main()
 	}
 
 	traverse(start); 
+	test(4); 
 
 
 
