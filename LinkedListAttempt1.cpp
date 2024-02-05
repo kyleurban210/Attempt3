@@ -15,6 +15,10 @@ public:
 	 Node(); 
 	 Node(int n); 
 	 Node(int n, Node* ptr); 
+	 Node* getNext(); 
+	 void setNext(Node* ptr); 
+	 int getData();
+	 void setData(int n); 
 	 int data;
 	 Node* next; 
 	 //Node* prev; 
@@ -47,6 +51,39 @@ Node ::Node(int n, Node* ptr)
 
 }
 
+Node* Node::getNext()
+{
+
+	return next; 
+
+
+}
+
+void Node::setNext(Node* ptr)
+{
+
+	next = ptr; 
+
+
+}
+
+int Node::getData()
+{
+
+	return data; 
+
+
+}
+
+void Node::setData(int n)
+{
+
+
+	data = n; 
+
+
+}
+
 
 //function prototypes
 Node* connector(Node* nodeptr, int input, bool make_new); 
@@ -54,7 +91,7 @@ Node* newNode(int input);
 int traverse(Node* nodeptr, bool display, int num_nodes);
  
 Node* partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterator); 
-Node* insert_at_node(Node* nodeptr, int desired_node); 
+Node* insert_at_node(Node* nodeptr, int desired_node, int input); 
 
  
 
@@ -62,7 +99,7 @@ Node* insert_at_node(Node* nodeptr, int desired_node);
 
 Node* connector(Node* nodeptr, int input, bool make_new)
 {
-	bool makenew = 0;
+	//bool makenew = 0;
 	
 	if (nodeptr == NULL)
 	{
@@ -165,21 +202,20 @@ Node* partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int itera
 
 }
 
-Node* insert_at_node(Node* nodeptr, int desired_node)
+Node* insert_at_node(Node* prev_node, int desired_node,int input)
 {
 
-	Node* temp; 
+	Node* new_node = new Node();
+
+	new_node->data = input;
+
+	new_node->next = prev_node->next; 
+
+	prev_node->next = new_node; 
+
+	return new_node; 
+
 	
-	int input; 
-
-	temp = nodeptr->next;
-
-	std::cout << "\nWhat is the data for this new node? ";
-	std::cin >> input;
-
-	nodeptr->next = newNode(input); 
-
-	return nodeptr; 
 
 
 
@@ -193,6 +229,7 @@ int main()
 	int num_nodes = 0;
 	int iterator = 0;
 	int desired_node = 0; 
+	int input; 
 
 	Node* start = new Node(1, nullptr); 
 	Node* desired; //stores the desired node. 
@@ -205,7 +242,7 @@ int main()
 	
 	std::cout << "\n"; 
 
-	for (int i = 0; i < rand() % 20; i++)
+	for (int i = 0; i < (rand() % 20) + 4 ; i++)
 	{
 
 		start = connector(start, rand() % 20, 1); 
@@ -235,13 +272,20 @@ int main()
 
 	}
 
-
+	std::cout << "\nEnter an integer you'd like to put in at this node>>> "; 
+	std::cin >> input; 
 	 
 
-	temp = insert_at_node(desired, desired_node); 
-	temp = connector(temp, temp->data, 0); //hope this works
+	temp = insert_at_node(desired, desired_node, input); 
+	//std::cout << temp << " / " << desired << " / " << temp->next;
 
-	traverse(start, 1, num_nodes);
+	//temp->next = connector(temp->next, temp->data, 0); //hope this works
+
+	std::cout << "\n"; 
+	num_nodes = 0; 
+	num_nodes = traverse(start, 1, num_nodes);
+
+	std::cout << "\nThe new number of nodes is... " << num_nodes; 
 
 	//std::cout << " \n The data of the final node is: " << end->data;
 
