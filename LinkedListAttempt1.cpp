@@ -287,6 +287,25 @@ int main()
 
 	std::cout << "\nThe new number of nodes is... " << num_nodes; 
 
+	std::cout << "\n"; 
+
+	for (int i = 0; i < rand() % num_nodes; i++)
+	{
+		iterator = 0;
+
+		desired = partial_traverse(start, num_nodes, rand() % num_nodes, iterator);
+		insert_at_node(desired, desired_node, rand()%40); 
+
+
+
+
+	}
+	
+
+	num_nodes = traverse(start, 1, num_nodes);
+
+	std::cout << "\nThe new number of nodes is... " << num_nodes;
+
 	//std::cout << " \n The data of the final node is: " << end->data;
 
 }
