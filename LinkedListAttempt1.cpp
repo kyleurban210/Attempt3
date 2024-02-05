@@ -49,32 +49,41 @@ Node ::Node(int n, Node* ptr)
 
 
 //function prototypes
-Node* connector(Node* nodeptr, int input); 
+Node* connector(Node* nodeptr, int input, bool make_new); 
 Node* newNode(int input); 
 int traverse(Node* nodeptr, bool display, int num_nodes);
-void test(int input); 
-void partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterator); 
+ 
+Node* partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterator); 
+Node* insert_at_node(Node* nodeptr, int desired_node); 
+
  
 
 
 
-Node* connector(Node* nodeptr, int input)
+Node* connector(Node* nodeptr, int input, bool make_new)
 {
 	bool makenew = 0;
 	
 	if (nodeptr == NULL)
 	{
-		
-			return newNode(input); 
+		if (make_new)
+		{
+			return newNode(input);
 
-		
+		}
+		else
+		{
+
+			return nullptr; 
+
+		}
 		
 
 	}
 	else
 	{
 
-		nodeptr->next = connector(nodeptr->next, input);
+		nodeptr->next = connector(nodeptr->next, input, make_new);
 		//nodeptr->prev = reverseconnector(nodeptr->prev); 
 		
 
@@ -123,21 +132,21 @@ int traverse(Node* nodeptr, bool display, int num_nodes)
 
 }
 
-void partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterator)
+Node* partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterator)
 {
 
 	if (desired_node > num_nodes)
 	{
 		std::cout << "\n**DESIRED NODE DOES NOT EXIST**\n"; 
 
-		return; 
+		return nullptr; 
 
 	}
 
 	if (iterator >= desired_node)
 	{
 
-		return; 
+		return nodeptr; //returns the current node 
 
 	}
 	else
@@ -156,9 +165,21 @@ void partial_traverse(Node* nodeptr, int num_nodes, int desired_node, int iterat
 
 }
 
-void test(int input)
+Node* insert_at_node(Node* nodeptr, int desired_node)
 {
 
+	Node* temp; 
+	
+	int input; 
+
+	temp = nodeptr->next;
+
+	std::cout << "\nWhat is the data for this new node? ";
+	std::cin >> input;
+
+	nodeptr->next = newNode(input); 
+
+	return nodeptr; 
 
 
 
@@ -174,10 +195,11 @@ int main()
 	int desired_node = 0; 
 
 	Node* start = new Node(1, nullptr); 
-	//Node* end; //stores the end node. 
-	start = connector(start, 8); 
+	Node* desired; //stores the desired node. 
+	Node* temp; 
+	start = connector(start, 8, 1); 
 	
-	start = connector(start, 9); 
+	start = connector(start, 9, 1); 
 
 	std :: cout << "\n Number of nodes here: " << traverse(start, 1, num_nodes);
 	
@@ -186,7 +208,7 @@ int main()
 	for (int i = 0; i < rand() % 20; i++)
 	{
 
-		start = connector(start, rand() % 20); 
+		start = connector(start, rand() % 20, 1); 
 
 	}
 
@@ -196,15 +218,30 @@ int main()
 
 	num_nodes =  traverse(start, display, num_nodes);
 	std::cout << "\n Number of nodes here: " << num_nodes; 
-	test(4); 
+	
 
 	std::cout << "\nHow many nodes to you want to traverse? ";
 	std::cin >> desired_node; 
 
-	partial_traverse(start, num_nodes, desired_node, iterator); 
+	desired = partial_traverse(start, num_nodes, desired_node, iterator);
+
+	if (desired == nullptr)
+	{
+		std::cout << "\n you went to the final node"; 
+	}
+	else
+	{
+		std::cout << "\n the contents of the node you stopped on is: " << desired->data;
+
+	}
 
 
+	 
 
+	temp = insert_at_node(desired, desired_node); 
+	temp = connector(temp, temp->data, 0); //hope this works
+
+	traverse(start, 1, num_nodes);
 
 	//std::cout << " \n The data of the final node is: " << end->data;
 
